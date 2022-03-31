@@ -9,8 +9,23 @@ body,
   display: flex;
   align-items: center;
   background: #93ccea;
-}
+  font-family: "Roboto", sans-serif;
 
-.row {
-  padding-bottom: 20px;
+  .row {
+    padding-bottom: 20px;
+
+    .card {
+      .card-body {
+        .card-text {
+          color: grey;
+        }
+      }
+    }
+  }
+
+  .input-group {
+    button {
+      width: 45px;
+    }
+  }
 }
