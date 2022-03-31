@@ -21,30 +21,28 @@ body,
     }
 
     .row {
-      // padding-bottom: 50px;
-
       .card {
         .card-body {
           .card-text {
             color: grey;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .wi {
+              font-size: 35px;
+            }
           }
         }
       }
     }
 
     .input-group {
-      // padding-right: 0;
-      // padding-left: 0;
       height: 45px;
 
       button {
         width: 45px;
       }
     }
-
-    // .alert {
-    //   margin-top: 10px;
-    //   margin-bottom: 0;
-    // }
   }
 }

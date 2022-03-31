@@ -1,12 +1,15 @@
 import { Card } from "react-bootstrap";
 import PropTypes from "prop-types";
 
-const DayContainer = ({ title, temp, scaleType }) => {
+const DayContainer = ({ title, temp, scaleType, icon }) => {
   return (
     <Card>
       <Card.Body>
         <Card.Title>{title}</Card.Title>
-        <Card.Text>{`${temp}${scaleType}`}</Card.Text>
+        <Card.Text>
+          {`${temp}${scaleType}`}
+          {icon}
+        </Card.Text>
       </Card.Body>
     </Card>
   );
@@ -18,4 +21,5 @@ DayContainer.propTypes = {
   title: PropTypes.string,
   temp: PropTypes.number,
   scaleType: PropTypes.string,
+  icon: PropTypes.element,
 };

@@ -69,6 +69,25 @@ const WeatherView = () => {
     }
   };
 
+  const getIcon = (main) => {
+    switch (main) {
+      case "Clear":
+        return <i className="wi wi-day-sunny"></i>;
+      case "Clouds":
+        return <i className="wi wi-cloudy"></i>;
+      case "Thunderstorm":
+        return <i className="wi wi-thunderstorm"></i>;
+      case "Drizzle":
+        return <i className="wi wi-sprinkle"></i>;
+      case "Rain":
+        return <i className="wi wi-rain"></i>;
+      case "Snow":
+        return <i className="wi wi-snow"></i>;
+      default:
+        return <i className="wi wi-cloud"></i>;
+    }
+  };
+
   useEffect(() => {
     getWeather();
   }, [scaleType, city]);
@@ -104,8 +123,9 @@ const WeatherView = () => {
         <Col md={{ span: 4, offset: 4 }}>
           <DayContainer
             title="Current weather"
-            temp={Math.round(data?.current.temp)}
+            temp={Math.round(data.current.temp)}
             scaleType={getScaleTypeText()}
+            icon={getIcon(data.current.weather[0].main)}
           />
         </Col>
       </Row>
@@ -116,6 +136,7 @@ const WeatherView = () => {
               title={getWeekDay(i)}
               temp={Math.round(d.temp.day)}
               scaleType={getScaleTypeText()}
+              icon={getIcon(d.weather[0].main)}
             />
           </Col>
         ))}
