@@ -1,0 +1,16 @@
+html,
+body,
+#root {
+  height: 100%;
+}
+
+#root {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  background: #93ccea;
+}
+
+.row {
+  padding-bottom: 20px;
+}
