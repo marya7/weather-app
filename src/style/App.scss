@@ -10,22 +10,41 @@ body,
   align-items: center;
   background: #93ccea;
   font-family: "Roboto", sans-serif;
+  overflow: auto;
 
-  .row {
-    padding-bottom: 20px;
+  .container {
+    .city {
+      justify-content: center;
+      display: flex;
+      padding-bottom: 40px;
+      font-size: 60px;
+    }
 
-    .card {
-      .card-body {
-        .card-text {
-          color: grey;
+    .row {
+      // padding-bottom: 50px;
+
+      .card {
+        .card-body {
+          .card-text {
+            color: grey;
+          }
         }
       }
     }
-  }
 
-  .input-group {
-    button {
-      width: 45px;
+    .input-group {
+      // padding-right: 0;
+      // padding-left: 0;
+      height: 45px;
+
+      button {
+        width: 45px;
+      }
     }
+
+    // .alert {
+    //   margin-top: 10px;
+    //   margin-bottom: 0;
+    // }
   }
 }
