@@ -38,10 +38,13 @@ body,
     }
 
     .input-group {
-      height: 45px;
+      .material-icons {
+        display: flex;
+      }
 
-      button {
-        width: 45px;
+      .scale {
+        width: 50px;
+        font-size: 24px;
       }
     }
   }

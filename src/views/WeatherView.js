@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import {
   Col,
@@ -12,18 +11,16 @@ import {
 } from "react-bootstrap";
 import DayContainer from "../components/DayContainer";
 import ScaleTypeEnum from "../enums/ScaleTypeEnum";
-import getLocationByCoordinates from "../services.js/location";
+import getCoordinatesByCity from "../services.js/location";
 import getWeatherData from "../services.js/weather";
 
 const WeatherView = () => {
   const [data, setData] = useState();
   const [scaleType, setScaleType] = useState(ScaleTypeEnum.Metric);
-  const [lat, setLat] = useState("59.436962");
-  const [lon, setLon] = useState("24.753574");
-  const [city, setCity] = useState("Tallinn");
+  const [lat, setLat] = useState("58.3780");
+  const [lon, setLon] = useState("26.7290");
+  const [city, setCity] = useState("Tartu");
   const [warning, setWarning] = useState();
-
-  console.log("data", data);
 
   const getWeekDay = (i) => {
     const arrayOfWeekdays = [
@@ -40,7 +37,7 @@ const WeatherView = () => {
     return arrayOfWeekdays[date.getDay()];
   };
 
-  const changeScaleType = (test) => {
+  const changeScaleType = () => {
     if (scaleType === ScaleTypeEnum.Metric)
       setScaleType(ScaleTypeEnum.Imperial);
     else setScaleType(ScaleTypeEnum.Metric);
@@ -51,12 +48,13 @@ const WeatherView = () => {
 
   const getWeather = async () => {
     const data = await getWeatherData(scaleType, lat, lon);
+    console.log("getWeather", data);
     setData(data);
   };
 
   const handleCityChange = async (e) => {
     if (e.key === "Enter") {
-      const city = await getLocationByCoordinates(e.target.value);
+      const city = await getCoordinatesByCity(e.target.value);
 
       if (city.length > 0) {
         setCity(city[0].name);
@@ -67,6 +65,17 @@ const WeatherView = () => {
         setWarning(true);
       }
     }
+  };
+
+  function setCurrentLocation(pos) {
+    const crd = pos.coords;
+    setLat(crd.latitude);
+    setLon(crd.longitude);
+    setCity("Current location");
+  }
+
+  const handleCurrentLocation = async () => {
+    navigator.geolocation.getCurrentPosition(setCurrentLocation);
   };
 
   const getIcon = (main) => {
@@ -90,7 +99,7 @@ const WeatherView = () => {
 
   useEffect(() => {
     getWeather();
-  }, [scaleType, city]);
+  }, [scaleType, lat, lon]);
 
   if (!data) return <Spinner animation="border" size="lg" />;
 
@@ -106,8 +115,15 @@ const WeatherView = () => {
             placeholder="Search for city"
             onKeyDown={handleCityChange}
           />
-          <Button variant="secondary" onClick={changeScaleType}>
+          <Button
+            variant="secondary"
+            onClick={changeScaleType}
+            className="scale"
+          >
             {getScaleTypeText()}
+          </Button>
+          <Button variant="secondary" onClick={handleCurrentLocation}>
+            <span className="material-icons">location_on</span>
           </Button>
         </InputGroup>
       </Row>
