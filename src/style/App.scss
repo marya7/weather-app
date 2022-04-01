@@ -8,14 +8,25 @@
     justify-content: center;
     font-family: "Roboto", sans-serif;
 
-    .city {
-      justify-content: center;
-      display: flex;
-      font-size: 60px;
-      color: #404040;
-    }
-
     .row {
+      .city {
+        justify-content: center;
+        display: flex;
+        font-size: 60px;
+        color: #404040;
+      }
+
+      .input-group {
+        .material-icons {
+          display: flex;
+        }
+
+        .scale {
+          width: 50px;
+          font-size: 24px;
+        }
+      }
+
       .card {
         .card-body {
           .card-text {
@@ -29,17 +40,6 @@
             }
           }
         }
-      }
-    }
-
-    .input-group {
-      .material-icons {
-        display: flex;
-      }
-
-      .scale {
-        width: 50px;
-        font-size: 24px;
       }
     }
   }
