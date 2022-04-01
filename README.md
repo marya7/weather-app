@@ -1,6 +1,6 @@
 # Weather app
 
-Before starting application, install node modules
+Before starting the application, install node modules with
 
 ### `npm install`
 

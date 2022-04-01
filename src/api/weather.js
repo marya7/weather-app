@@ -1,4 +1,4 @@
-import fetchData from "./fetchData";
+import { fetchData } from "../services/data";
 
 const getWeatherData = (scaleType, lat, lon) => {
   return fetchData(

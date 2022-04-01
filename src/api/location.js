@@ -1,4 +1,4 @@
-import fetchData from "./fetchData";
+import { fetchData } from "../services/data";
 
 const getCoordinatesByCity = (location) => {
   return fetchData(

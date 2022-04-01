@@ -11,36 +11,23 @@ import {
 } from "react-bootstrap";
 import DayContainer from "../components/DayContainer";
 import ScaleTypeEnum from "../enums/ScaleTypeEnum";
-import getCoordinatesByCity from "../services.js/location";
-import useLocalStorage from "../services.js/useLocalStorage";
-import getWeatherData from "../services.js/weather";
+import getCoordinatesByCity from "../api/location";
+import useLocalStorage from "../hooks/useLocalStorage";
+import getWeatherData from "../api/weather";
+import { getIcon } from "../services/icons";
+import { getWeekDay } from "../services/week";
 
 const WeatherView = () => {
   const [data, setData] = useState();
   const [warning, setWarning] = useState();
 
-  const [lat, setLat] = useLocalStorage("lat", "58.3780");
-  const [lon, setLon] = useLocalStorage("lon", "26.7290");
-  const [city, setCity] = useLocalStorage("city", "Tartu");
+  const [lat, setLat] = useLocalStorage("lat");
+  const [lon, setLon] = useLocalStorage("lon");
+  const [city, setCity] = useLocalStorage("city");
   const [scaleType, setScaleType] = useLocalStorage(
     "scale",
     ScaleTypeEnum.Metric
   );
-
-  const getWeekDay = (i) => {
-    const arrayOfWeekdays = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
-    const date = new Date();
-    date.setDate(date.getDate() + i + 1);
-    return arrayOfWeekdays[date.getDay()];
-  };
 
   const changeScaleType = () => {
     if (scaleType === ScaleTypeEnum.Metric)
@@ -53,7 +40,6 @@ const WeatherView = () => {
 
   const getWeather = async () => {
     const data = await getWeatherData(scaleType, lat, lon);
-    console.log("getWeather", data);
     setData(data);
   };
 
@@ -74,6 +60,7 @@ const WeatherView = () => {
 
   function setCurrentLocation(pos) {
     const crd = pos.coords;
+    console.log("setCurrentLocation", crd.latitude, crd.longitude);
     setLat(crd.latitude);
     setLon(crd.longitude);
     setCity("Current location");
@@ -84,27 +71,9 @@ const WeatherView = () => {
     navigator.geolocation.getCurrentPosition(setCurrentLocation);
   };
 
-  const getIcon = (main) => {
-    switch (main) {
-      case "Clear":
-        return <i className="wi wi-day-sunny"></i>;
-      case "Clouds":
-        return <i className="wi wi-cloudy"></i>;
-      case "Thunderstorm":
-        return <i className="wi wi-thunderstorm"></i>;
-      case "Drizzle":
-        return <i className="wi wi-sprinkle"></i>;
-      case "Rain":
-        return <i className="wi wi-rain"></i>;
-      case "Snow":
-        return <i className="wi wi-snow"></i>;
-      default:
-        return <i className="wi wi-cloud"></i>;
-    }
-  };
-
   useEffect(() => {
-    getWeather();
+    if (lat && lon) getWeather();
+    else handleCurrentLocation();
   }, [scaleType, lat, lon]);
 
   if (!data) return <Spinner animation="border" size="lg" />;
