@@ -72,6 +72,7 @@ const WeatherView = () => {
     setLat(crd.latitude);
     setLon(crd.longitude);
     setCity("Current location");
+    setWarning(false);
   }
 
   const handleCurrentLocation = async () => {
@@ -103,60 +104,75 @@ const WeatherView = () => {
 
   if (!data) return <Spinner animation="border" size="lg" />;
 
-  return (
-    <Container>
+  const renderCityName = () => (
+    <Row className="mb-4">
       <h1 className="city">{city}</h1>
-      <Row className={warning ? "mb-2" : "mb-4"}>
-        <InputGroup>
-          <InputGroup.Text>
-            <span className="material-icons">search</span>
-          </InputGroup.Text>
-          <FormControl
-            placeholder="Search for city"
-            onKeyDown={handleCityChange}
-          />
-          <Button
-            variant="secondary"
-            onClick={changeScaleType}
-            className="scale"
-          >
-            {getScaleTypeText()}
-          </Button>
-          <Button variant="secondary" onClick={handleCurrentLocation}>
-            <span className="material-icons">location_on</span>
-          </Button>
-        </InputGroup>
-      </Row>
-      {warning && (
-        <Row className="mb-2">
-          <Col>
-            <Alert variant="warning">City not found</Alert>
-          </Col>
-        </Row>
-      )}
+    </Row>
+  );
 
-      <Row className="mb-4">
-        <Col md={{ span: 4, offset: 4 }}>
+  const renderSearchWithButtons = () => (
+    <Row className={warning ? "mb-2" : "mb-4"}>
+      <InputGroup>
+        <InputGroup.Text>
+          <span className="material-icons">search</span>
+        </InputGroup.Text>
+        <FormControl
+          placeholder="Search for city"
+          onKeyDown={handleCityChange}
+        />
+        <Button variant="secondary" onClick={changeScaleType} className="scale">
+          {getScaleTypeText()}
+        </Button>
+        <Button variant="secondary" onClick={handleCurrentLocation}>
+          <span className="material-icons">location_on</span>
+        </Button>
+      </InputGroup>
+    </Row>
+  );
+
+  const renderWarning = () => (
+    <Row className="mb-2">
+      <Col>
+        <Alert variant="warning">City not found</Alert>
+      </Col>
+    </Row>
+  );
+
+  const renderCurrentWeather = () => (
+    <Row className="mb-4">
+      <Col md={{ span: 4, offset: 4 }}>
+        <DayContainer
+          title="Current weather"
+          temp={Math.round(data.current.temp)}
+          scaleType={getScaleTypeText()}
+          icon={getIcon(data.current.weather[0].main)}
+        />
+      </Col>
+    </Row>
+  );
+
+  const renderForecast = () => (
+    <Row>
+      {data?.daily.slice(1).map((d, i) => (
+        <Col key={i} className="mb-4">
           <DayContainer
-            title="Current weather"
-            temp={Math.round(data.current.temp)}
+            title={getWeekDay(i)}
+            temp={Math.round(d.temp.day)}
             scaleType={getScaleTypeText()}
-            icon={getIcon(data.current.weather[0].main)}
+            icon={getIcon(d.weather[0].main)}
           />
         </Col>
-      </Row>
-      <Row>
-        {data?.daily.slice(1).map((d, i) => (
-          <Col key={i} className="mb-4">
-            <DayContainer
-              title={getWeekDay(i)}
-              temp={Math.round(d.temp.day)}
-              scaleType={getScaleTypeText()}
-              icon={getIcon(d.weather[0].main)}
-            />
-          </Col>
-        ))}
-      </Row>
+      ))}
+    </Row>
+  );
+
+  return (
+    <Container>
+      {renderCityName()}
+      {renderSearchWithButtons()}
+      {warning && renderWarning()}
+      {renderCurrentWeather()}
+      {renderForecast()}
     </Container>
   );
 };
