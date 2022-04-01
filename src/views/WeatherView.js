@@ -12,15 +12,20 @@ import {
 import DayContainer from "../components/DayContainer";
 import ScaleTypeEnum from "../enums/ScaleTypeEnum";
 import getCoordinatesByCity from "../services.js/location";
+import useLocalStorage from "../services.js/useLocalStorage";
 import getWeatherData from "../services.js/weather";
 
 const WeatherView = () => {
   const [data, setData] = useState();
-  const [scaleType, setScaleType] = useState(ScaleTypeEnum.Metric);
-  const [lat, setLat] = useState("58.3780");
-  const [lon, setLon] = useState("26.7290");
-  const [city, setCity] = useState("Tartu");
   const [warning, setWarning] = useState();
+
+  const [lat, setLat] = useLocalStorage("lat", "58.3780");
+  const [lon, setLon] = useLocalStorage("lon", "26.7290");
+  const [city, setCity] = useLocalStorage("city", "Tartu");
+  const [scaleType, setScaleType] = useLocalStorage(
+    "scale",
+    ScaleTypeEnum.Metric
+  );
 
   const getWeekDay = (i) => {
     const arrayOfWeekdays = [
