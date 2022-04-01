@@ -17,7 +17,7 @@ import getWeatherData from "../api/weather";
 import { getIcon } from "../services/icons";
 import { getWeekDay } from "../services/week";
 
-const WeatherView = () => {
+const Weather = () => {
   const [data, setData] = useState();
   const [warning, setWarning] = useState();
 
@@ -151,4 +151,4 @@ const WeatherView = () => {
   );
 };
 
-export default WeatherView;
+export default Weather;

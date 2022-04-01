@@ -1,8 +1,8 @@
 import "./style/App.scss";
-import WeatherView from "./views/WeatherView";
+import Weather from "./views/Weather";
 
 function App() {
-  return <WeatherView />;
+  return <Weather />;
 }
 
 export default App;
