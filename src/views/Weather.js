@@ -63,7 +63,6 @@ const Weather = () => {
 
   function setCurrentLocation(pos) {
     const crd = pos.coords;
-    console.log("setCurrentLocation", crd.latitude, crd.longitude);
     setLat(crd.latitude);
     setLon(crd.longitude);
     setCity("Current location");
