@@ -12,7 +12,7 @@ import {
 import DayContainer from "../components/DayContainer";
 import ScaleTypeEnum from "../enums/ScaleTypeEnum";
 import useLocalStorage from "../hooks/useLocalStorage";
-import { getIcon } from "../services/icons";
+import { getIcon } from "../services/icon";
 import { getWeekDay } from "../services/week";
 import {
   useLazyGetCoordinatesQuery,

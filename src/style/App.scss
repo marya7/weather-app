@@ -1,18 +1,13 @@
-html,
-body,
 #root {
-  height: 100%;
-}
-
-#root {
-  justify-content: center;
-  display: flex;
-  align-items: center;
   background: #6495ed;
-  font-family: "Roboto", sans-serif;
-  overflow: auto;
 
   .container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-family: "Roboto", sans-serif;
+
     .city {
       justify-content: center;
       display: flex;
