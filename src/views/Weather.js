@@ -11,14 +11,15 @@ import {
 } from "react-bootstrap";
 import DayContainer from "../components/DayContainer";
 import ScaleTypeEnum from "../enums/ScaleTypeEnum";
-import getCoordinatesByCity from "../api/location";
 import useLocalStorage from "../hooks/useLocalStorage";
-import getWeatherData from "../api/weather";
 import { getIcon } from "../services/icons";
 import { getWeekDay } from "../services/week";
+import {
+  useLazyGetCoordinatesQuery,
+  useGetWeatherQuery,
+} from "../api/weatherApi";
 
 const Weather = () => {
-  const [data, setData] = useState();
   const [warning, setWarning] = useState();
 
   const [lat, setLat] = useLocalStorage("lat");
@@ -29,6 +30,12 @@ const Weather = () => {
     ScaleTypeEnum.Metric
   );
 
+  const { data } = useGetWeatherQuery(
+    { lat, lon, scaleType },
+    { skip: !lat && !lon }
+  );
+  const [getCoordinates] = useLazyGetCoordinatesQuery();
+
   const changeScaleType = () => {
     if (scaleType === ScaleTypeEnum.Metric)
       setScaleType(ScaleTypeEnum.Imperial);
@@ -38,19 +45,15 @@ const Weather = () => {
   const getScaleTypeText = () =>
     scaleType === ScaleTypeEnum.Metric ? "°C" : "°F";
 
-  const getWeather = async () => {
-    const data = await getWeatherData(scaleType, lat, lon);
-    setData(data);
-  };
-
   const handleCityChange = async (e) => {
     if (e.key === "Enter") {
-      const city = await getCoordinatesByCity(e.target.value);
+      const res = await getCoordinates({ location: e.target.value });
 
-      if (city.length > 0) {
-        setCity(city[0].name);
-        setLat(city[0].lat);
-        setLon(city[0].lon);
+      if (res?.data.length > 0) {
+        const city = res.data[0];
+        setCity(city.name);
+        setLat(city.lat);
+        setLon(city.lon);
         setWarning(false);
       } else {
         setWarning(true);
@@ -72,9 +75,8 @@ const Weather = () => {
   };
 
   useEffect(() => {
-    if (lat && lon) getWeather();
-    else handleCurrentLocation();
-  }, [scaleType, lat, lon]);
+    if (!lat || !lon) handleCurrentLocation();
+  }, []);
 
   if (!data) return <Spinner animation="border" size="lg" />;
 
